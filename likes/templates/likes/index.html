@@ -1,0 +1,28 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8"/>
+	<title>Like counter</title>
+</head>
+<body>
+</body>
+<script>
+
+	let webSocket = new WebSocket("ws://localhost:8000/weblikes/")
+		
+	webSocket.onmessage = function(e) {
+		let data = JSON.parse(e.data);
+		let likecnt = data('likecnt');
+		console.log(likecnt);
+	};
+		
+	webSocket.onclose = (e) => {console.error("Socket closed unexpectually");};
+	
+	function sendData() {
+		webSocket.send(JSON.stringify({'message': 'hello'}));
+	}
+	
+	webSocket.onopen = () => {setInterval(sendData, 100);};
+	
+</script>
+</html>
